@@ -110,4 +110,59 @@ def shuffled_spike(N, M, lamb, u, v, norm=False):
     return X, U, S, V
 
 
+def inhomogWishart(N, M, a, b, diag=True, verb= False, white = True):
+
+    p = np.random.beta(a, b, size = (M, ))
+    #p = 1-np.zeros(shape=(M, ))
+    A = np.random.uniform(size=(N, M))
+    B = np.zeros(shape=(N, M))
+    for i in range(M):
+        I = np.where(A[:, i] < p[i])
+        B[I, i] = 1
+    nnz = np.sum(B, axis=0)
+    I = np.where(nnz < 1.5)
+    if verb:
+        print('Number of zero or one columns:', len(I[0]))
+    if white:
+        X = np.random.normal(size=(N, M))
+        H = X*B
+    else:
+        #v = np.random.uniform(size=4)
+        #X = np.random.choice(v, size=(N, M))
+        X= np.random.standard_cauchy(size=(N, M))
+        X = X / np.power((np.abs(X)), 0.4)
+
+        H = X*B
+
+    H =np.delete(H, I, axis=1)
+    H = H - np.mean(H, axis=0)
+
+    H = H / np.sqrt(np.sum(H*H, axis=0))
+    if diag:
+        U, S, V = np.linalg.svd(H)
+        S = np.power(S, 2)
+        return H, U, S, V
+    else:
+        return H, B
+
+def MPwiki(x, lam, sig):
+    lamMinus = np.power(sig*(1-np.sqrt(lam)), 2)
+    lamPlus = np.power(sig*(1+np.sqrt(lam)), 2)
+    val = np.sqrt((x-lamMinus)*(lamPlus-x))
+    val = val / x
+    val = val / (2 * np.pi * sig*sig*lam)
+    return val
+
+def plotWiki(n, lam, sig):
+    lamMinus = np.power(sig * (1 - np.sqrt(lam)), 2)
+    lamPlus = np.power(sig * (1 + np.sqrt(lam)), 2)
+    x = np.arange(0, n+1)/ (n)* (lamPlus - lamMinus)*0.999+lamMinus
+
+    y = MPwiki(x, lam, sig)
+    return x, y
+
+def params(mu, second):
+    sig = np.sqrt(mu)
+    lam = second / np.power(sig, 4) - 1
+    return lam, sig
 
