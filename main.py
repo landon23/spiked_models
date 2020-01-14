@@ -166,3 +166,10 @@ def params(mu, second):
     lam = second / np.power(sig, 4) - 1
     return lam, sig
 
+def heavy(N, M, p):
+    X = np.random.standard_cauchy(size=(N, M))
+    X = X / np.power(np.abs(X), 1-p)
+    X = X / np.sqrt( np.sum(X*X, axis=0))
+    #X = X / np.sqrt(N)
+    U, S, V = np.linalg.svd(X)
+    return U, S, V
