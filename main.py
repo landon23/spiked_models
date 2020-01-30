@@ -174,7 +174,7 @@ def heavy(N, M, p):
     U, S, V = np.linalg.svd(X)
     return U, S, V
 
-def power(N, M, p0, p1=0.5, k=1):
+def power(N, M, p0, p1=0.5, k=1, emp=False):
     #p = (np.arange(M)+1.0)/M
     #p = np.log(1 / p0)*(p - 1 )
     #p = np.exp(p)/2
@@ -194,23 +194,37 @@ def power(N, M, p0, p1=0.5, k=1):
     H = H + (pMat > Y)
     #plt.hist(p, bins=50)
     #plt.show()
-    empirical = False
+    #empirical = False
+    empirical = emp
+
     if empirical:
         nnz = np.sum(H, axis=0)
         I = np.where(nnz < 1.5)
         H =np.delete(H, I, axis=1)
 
         p = np.mean(H, axis=0)
-    nnz = np.count_nonzero(H, axis=0)
-    I = np.where(nnz < (k -0.5))
+    else:
+        nnz = np.count_nonzero(H, axis=0)
+        I = np.where(nnz < (k -0.5))
 
 
     H = H - 2*p
     std = np.sqrt(2 *p * (1-p))
     H = H / std
-    H = np.delete(H, I, axis=1)
+    if not empirical:
+        H = np.delete(H, I, axis=1)
 
     H = H / np.sqrt(N)
     S = np.linalg.svd(H, compute_uv=False)
-    return S*S
+    if empirical:
+        return S*S, H.shape[1]
+    else:
+        return S*S
 
+
+def generalWishart(N, M, variance):
+    X = np.random.normal(size=(N, M))
+    X = X*variance
+    X = X / np.sqrt(N)
+    S = np.linalg.svd(X, compute_uv=False)
+    return S*S
