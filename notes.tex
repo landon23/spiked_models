@@ -1,0 +1,469 @@
+\documentclass[11 pt, reqno]{article}
+
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage[colorlinks=true,hyperindex=true]{hyperref}
+\usepackage{cancel,bbm}
+%\usepackage{times}%times font
+\usepackage{mathabx} %% widebar
+\usepackage{comment}
+\usepackage{enumitem}
+%\usepackage{natbib}
+\usepackage{cite}
+\usepackage{showlabels}
+
+
+\usepackage{chngcntr}
+\counterwithin*{equation}{section}
+
+%\usepackage[T1]{fontenc}
+%\usepackage[latin1]{inputenc}
+\usepackage[a4paper, left=2cm, right=2cm, top=2 cm, bottom= 2 cm]{geometry}
+%\usepackage{a4wide}%Uncomment for wider pages
+\usepackage{color}
+\usepackage{fancyhdr}
+\usepackage{latexsym}
+
+
+%%%%%%% Numbering %%%%
+\def\theequation{\thesection.\arabic{equation}}
+
+
+
+
+
+%%%%%%Theorem-like environments%%%%%%%%%%
+\newtheorem{ccounter}{ccounter}[section]
+\newtheorem{thm}[ccounter]{Theorem}
+\newtheorem{lem}[ccounter]{Lemma}
+\newtheorem{cor}[ccounter]{Corollary}
+\newtheorem{defn}[ccounter]{Definition}
+\newtheorem{prop}[ccounter]{Proposition}
+\newtheorem{ass}[ccounter]{Assumption}
+\newtheorem{ex}[ccounter]{Example}
+
+
+
+
+
+%%%%Shortcuts
+\def\bet{\begin{thm}}
+\def\eet{\end{thm}}
+\def\bel{\begin{lem}}
+\def\eel{\end{lem}}
+\def\bas{\begin{ass}}
+\def\eas{\end{ass}}
+\def\bec{\begin{cor}}
+\def\eec{\end{cor}}
+\def\bed{\begin{defn}}
+\def\eed{\end{defn}}
+\def\bep{\begin{prop}}
+\def\eep{\end{prop}}
+\def\beq{\begin{equation}}
+\def\eeq{\end{equation}}
+\def\proof{\noindent {\bf Proof.}\ \ }
+\def\bea{\begin{equation*}}
+\def\eea{\end{equation*}}
+\def\tr{\mathrm{tr}}
+\def\bex{\begin{ex}}
+\def\eex{\end{ex}}
+\def\remark{\noindent{\bf Remark. }}
+\def\mfp{\mathfrak{p}}
+\def\mfs{\mathfrak{s}}
+
+
+
+
+
+%%%USUAL SHORTCUTS
+\def\rr{\mathbb{R}}
+\def\zz{\mathbb{Z}}
+\def\cc{\mathbb{C}}
+\def\1{\boldsymbol{1}}
+\def\Im{\mathrm{Im}}
+\def\Re{\mathrm{Re}}
+\def\e{\mathrm{e}}
+\def\i{\mathrm{i}}
+\def\del{\partial}
+\def\d{\mathrm{d}}
+\def\eps{\varepsilon}
+\renewcommand\leq\varleq
+\renewcommand\geq\vargeq
+\def\ee{\mathrm{E}}
+\def\tilg{\tilde{g}}
+\def\F{\mathcal{F}}
+\def\O{\mathcal{O}}
+\def\fa{\mathfrak{a}}
+\def\ee{\mathbb{E}}
+\def\om{\omega}
+\def\pp{\mathbb{P}}
+\def\gfc{\gamma^{(\mathrm{fc})}}
+
+%%%%%%%SHORTCUTS FOR THIS ARTICLE
+\def\A{\mathcal{A}}
+
+%%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\title{Deformed GOE}
+
+
+
+%%\maketitle
+
+
+
+
+
+
+
+\begin{comment}
+\begin{table}
+\centering
+
+\begin{tabular}{c}
+\multicolumn{1}{c}{\Large{\bf Convergence of local statistics of Dyson Brownian motion }}\\
+\\
+\\
+\end{tabular}
+\begin{tabular}{c c c}
+Benjamin Landon & & Horng-Tzer Yau\\
+\\
+ \multicolumn{3}{c}{ \small{Department of Mathematics} } \\
+ \multicolumn{3}{c}{ \small{Harvard University} } \\
+\small{landon@math.harvard.edu} &  & \small{htyau@math.harvard.edu}  \\
+\\
+\end{tabular}
+\\
+\begin{tabular}{c}
+\multicolumn{1}{c}{\today}\\
+\\
+\end{tabular}
+
+\begin{tabular}{p{15 cm}}
+\small{{\bf Abstract:} We analyze the rate of convergence of the local statistics of Dyson Brownian motion to the GOE/GUE for short times $t=o(1)$ with deterministic initial data $V$.  % to the GOE/GUE for short times $t = o(1)$.  
+Our main result states that if the density of states of $V$ is bounded both above and away from $0$ down to scales $\ell \ll t$ in a small interval of size $G \gg \sqrt{t}$ around an energy $E_0$, then the local statistics coincide with the GOE/GUE near the energy $E_0$ after time $t$.  Our methods are partly based on the idea of coupling two Dyson Brownian motions from \cite{homog}, the parabolic regularity result of \cite{gap}, and the eigenvalue rigidity results of \cite{Kevin1}.}
+\end{tabular}
+\end{table}
+\end{comment} 
+
+
+
+
+\section{Behavior of Dey-Lee estimator in the absence of square root-like behavior}
+\subsection{Notation} 
+We fix notation.  The data matrix $X$ is $N \times M$, with $N$ independent samples of some $M$-dimensional vectors.  The distribution of each row of $X$ has covariance matrix,
+\beq
+\left( \begin{matrix} A & 0 \\ 0 & \Sigma \end{matrix} \right) =: T^{1/2}
+\eeq
+where $A$ is $m \times m$ and $\Sigma$ is $M-m \times M-m$.  $A$ is the `spike' and $\Sigma$ is the `noise.'  
+
+We denote the eigenvalues of $A$, the {\bf population spikes} by $p_1, \dots, p_m$.  We denote the spectral measure of the noise $\Sigma$ by $H_M$, and assume it converges to some limiting measure $H$.   The {\bf sample eigenvalues} will be denoted by $\lambda_1, \lambda_2, \dots$.
+
+The {\bf sample covariance} matrix $N^{-1} X^* X$ has the block-matrix decomposition,
+\beq
+\frac{1}{N} X^* X = \frac{1}{N} \left( \begin{matrix} X_1^* X_1 & X_1^* X_2 \\ X_2^* X_1 & X_2^* X_2 \end{matrix}\right)
+\eeq
+where $X_1$ is $N \times m$, consisting of the first $m$ coordinates of each row of $X$ and $X_2$ is the last $M-m$ coordinates, i.e., $X = ( X_1,  X_2 )$.  It is from this block matrix decomposition that all of the formulas for overlaps of sample eigenvectors with population eigenvectors, relation between sample eigenvalues and population eigenvalues, etc., come from.  The derivation is summarized in Section \ref{sec:estimators}. 
+\subsection{Marcenko-Pastur quantities}
+
+The Dey-Lee estimators all involve Marcenko-Pastur-type quantities related to $X_2$ through $\Sigma$.  We now recall these quantities.  If $H_M$ converges to a limit $H$, and  then the empirical spectral distribution of $N^{-1} X_2^* X_2$ converges to a measure $\rho$ admitting the following description.  First, recall that the eigenvalues of $N^{-1} X_2 X_2^*$ are the same as $N^{-1} X_2^* X_2$ up $|(M-m) - N|$ zeros. We denote the limit of the ESD of $N^{-1} X_2 X_2^*$ by  $\tilde{\rho}$, and denote the Stieltjes transforms of $\rho$ and $\tilde{\rho}$ by $m$ and $\tilde{m}$ respectively.  They are related via,
+\beq
+\gamma z m = (1 - \gamma ) + z \tilde{m},
+\eeq
+where
+\beq
+\gamma := \lim_{N \to \infty} \frac{M}{N}
+\eeq
+The function $\tilde{m}$ satisfies the functional equation,
+\beq
+\tilde{m} (z) = - \left( z - \gamma \int \frac{ \lambda \d H ( \lambda ) }{ 1 + \lambda \tilde{m} (z)} \right)^{-1}.
+\eeq
+Now, Dey-Lee define the function $\psi$ as,
+\beq
+\psi ( \alpha ) := \alpha + \gamma \alpha \int \frac{ \lambda \d H ( \lambda ) }{ \alpha - \lambda }.
+\eeq
+Hence, we see the functional relation,
+\beq \label{eqn:func}
+\psi ( -1 / \tilde{m} (z) ) = z.
+\eeq
+For the remainder of the discussion we will assume that the measures $\rho$ and $\tilde{\rho}$ have a single interval of support (on which the density is analytic, which comes from [Choi-Silverstein, ``Analysis of the limiting spectral distribution of...'']).  
+
+\subsection{Formulas for estimators}
+
+From the paper [Bai-Yao, ``On sample eigenvalues in a generalized spiked population model''], we know that a population  spiked eigenvalue $p_i$ gives rise to an outlier iff $p_i > \mfp$, where $\mfp$ is the point,
+\beq
+\mfp := \inf_{p} \left\{ p : \psi' ( p') > 0 \mbox{ for all } p' > p \right\}.
+\eeq
+When everything is quite regular, usually $\mfp$ just turns out to be the largest solution to $\psi' ( \mfp ) = 0$.   The location of the resulting spike is at $s_i := \psi ( p_i)$.
+
+The equation for the overlap between the population spiked eigenvector and sample eigenvector is,
+\beq \label{eqn:overlap}
+- \frac{ \tilde{m} (s_i ) }{ s_i m' (s_i ) } = \frac{ p_i \psi' ( p_i ) }{ \psi ( p_i ) }.
+\eeq
+
+ Differentiating the functional equation \eqref{eqn:func} we get,
+\beq
+\psi' ( -1 / \tilde{m} (z) ) \frac{ \tilde{m}' (z) }{ ( \tilde{m} (z) )^2 } = 1.
+\eeq
+(Note that this, together with \eqref{eqn:func} explains \eqref{eqn:overlap}). 
+Hence, we see the point,
+\beq
+\mfs := \psi ( \mfp )
+\eeq
+coincides with the right end-point of the measures $\rho, \tilde{\rho}$.  Note that this makes sense; to the right of $\mfp$, the function $\psi$ is increasing.  Population spikes $p_i$ closer to $\mfp$ give rise to sample spikes closer to the right edge of the noise distribution $\rho$, until $p_i \downarrow \mfp$ at which point the corresponding sample spike is swallowed into the noise $\rho$.
+
+
+\subsection{Regular and irregular cases}
+I want to examine more closely the behavior of these estimators for spikes close to the right edge $\mfs$ in the case where $\rho$ lacks a square-root behavior.
+
+
+
+
+
+
+
+Denote by $[A, B]$ the {\bf convex hull} of the {\bf support} of $H$ (only the location of the right edge $B$ will be important, so it is no matter that $A$ was already in regard to the population spikes above).  Then, from the equation,
+\beq
+\psi' (\alpha ) = 1 - \gamma \int \frac{ \lambda^2 \d H }{ (  \alpha - \lambda)^2},
+\eeq
+we see that there are two cases that have possibly different behavior:
+\begin{enumerate}
+\item The ``regular'' case:
+\beq
+ \int \frac{ \lambda^2 \d H }{ ( B- \lambda )^2 } > \frac{1}{ \gamma} 
+\eeq
+\item The ``irregular'' case:
+\beq \label{eqn:irreg}
+\int \frac{ \lambda^2 \d H }{ ( B - \lambda)^2 } \leq \frac{1}{ \gamma}.
+\eeq
+
+\end{enumerate}
+In the regular case, the point $\mfp$ satisfies $\mfp > B$.  In the irregular case $\mfp = B$ (pretty sure this is always true). 
+
+In the regular case, the measure $\rho$ will have a square-root behavior near its right spectral edge $\mfs$.  This is proven in [Bao-Pan-Zhou, ``Universality of the largest..."] (see their condition 1.1(iii) which is a finite $N$ version of this, assumed to hold uniformly in $N$), or [Lee-Schnelli, ``Tracy-Widom distribution for..."] (which is essentially the same paper as BPZ), or [El Karoui, ``Tracy-Widom limit for the largest..."].  The survey paper [Hachem-Hardy-Najim, ``A Survey on the Eigenvalues Local Behavior of
+Large Complex Correlated Wishart Matrices''] contains this as well, perhaps in a more readable fashion.
+
+The irregular case is less studied, and a square root behavior does not necessarily emerge.  An example that this could arrive in is when the measure $\d H (B-t) \sim t^\beta \d t $ for some $\beta >1$.  Note that if $\beta < 1$, then the value of the integral above is $+ \infty$ so the regular case always arises.  Moreover, $\gamma$ must be small enough to be in the irregular case.
+
+\subsubsection{Kwak-Lee-Park paper}
+This kind of power-law vanishing was actually studied quite recently in a paper [Kwak-Lee-Park, ``Extremal eigenvalues of sample covariance matrices with general population''] (an August 2019 arXiv date!!].  They showed that under the assumption $\d H (B-t) \sim t^\beta \d t $ for $\beta >1$, the limiting density $\rho$ has a power law with the same exponent $\beta$ for $\gamma$ small enough.  They have some {\bf incomplete} results on fluctuations (their main theorem, Thm 2.6 is also stated incorrectly).  Recall that we are just looking at the behavior of the noise matrix when we have no spikes.  Essentially, they show that the sample eigenvalues satisfy 
+\beq \label{eqn:klp}
+\lambda_i = \sigma_i ( \Sigma ) + \mbox{error}
+\eeq
+ for some error term.  Here $\sigma_i ( \Sigma)$ is the $i$th largest eigenvalue of $\Sigma$ (we introduce this notation to not confuse it with $p_k$ which involved the spike matrix $A$ above).
+
+  In the case that $\Sigma$ is diagonal with iid entries coming from $H$, then the fluctuations $\sigma_i ( \Sigma)$ are coming from order statistics of iid random variables, and in this case are a Weibull distribution.  The fluctuations of the $\sigma_i ( \Sigma)$ are larger than the error term \eqref{eqn:klp}, so in this specific iid case, you get Weibull fluctuations for $\lambda_i$. 
+
+ I do not know how relevent this is at all, because I see no reason why the eigenvalues $\sigma_i ( \Sigma)$ would be iid random variables in any realistic situation.
+
+
+\subsection{Other papers mentioning irregular case}
+ 
+The aforementioned [Hachem-Hardy-Najim] mentions that they believe that the irregular case ``falls outside the RMT universality class'' and that they believe that the limiting extremal eigenvalue fluctuations depend on the limiting measure $H$ (see Section 5). An additive version of this model, the deformed GUE was considered in [Capitaine-Peche, ``Fluctuations at the edges of the spectrum..."].  In the irregular case, they claim that one can prove that the limiting fluctuations are Gaussian instead of TW, in Remark 1.1.  This remark is unproven, and I see no reason to believe it one way or another.  If it is Gaussian, it may be heavily dependent on the fact that the matrix entries of the GUE are themselves Gaussian.
+
+
+
+
+
+\subsection{Comparison of estimators of irregular and regular cases near the edge}
+
+Now, we know that the  squared overlap of the $i$th sample eigenvector and population eigenvector converges to the function of the $i$th population spike $p_i$ given by,
+\beq
+\eta (p_i ) := \begin{cases} 0 ,  & p_i \leq \mfp \\
+\frac{p_i \psi' ( p_i  ) }{ \psi ( p_i ) } & p_i > \mfp \end{cases}.
+\eeq
+In the regular case, this is a {\bf continuous } function of $p_i$; that is, $\lim_{p \downarrow \mfp } \psi' (p) = 0$.  In the irregular case whenever we have a strict inequality in \eqref{eqn:irreg} this will be a {\bf discontinuous} function of $p_i$, as we will have
+\beq
+\frac{ \mfp  \psi' ( \mfp ) }{ \psi ( \mfp ) } > 0 .
+\eeq
+
+Essentially, I would be cautious in applying the Dey-Lee theory to spikes that are close to the noise distribution when the noise appears to lack any square-root behavior.  Consider for the moment the case of pure noise.  When $\rho$ has a square root, then since $\lambda_1 = \mfs + \O ( N^{-2/3} )$, one sees that 
+\beq
+\eta ( \lambda_1 ) \approx N^{-2/3}
+\eeq
+which is still too large by a factor of $N^{1/3}$, but is at least going to $0$ as $N \to \infty$.  In the irregular case, as long as $\lambda_1$ falls to the right of the rightmost spectral edge $\mfs$, one will estimate a positive quantity not going to $0$ as $N \to \infty$ due to the discontinuity.  
+
+\section{Derivation of estimators from Bai-Yao and Dey-Lee}
+
+\label{sec:estimators}
+The set-up is that we look at,
+\beq
+X = Z T^{1/2} 
+\eeq
+where $Z$ is an $N \times M$ matrix ($N$ is number of samples, $M$ is number of features/covariates), and $T$ is an $M \times M$ block symmetric matrix in the form,
+\beq
+T = \left( \begin{matrix} A & 0 \\ 0 & \Sigma \end{matrix} \right)
+\eeq
+where $A$ is the ``spike'' and is dimension $d \times d$ for finite $d$, and $\Sigma$ is the population covariance matrix.
+
+The sample covariance matrix that is inspected is then,
+\beq
+\frac{1}{N} X^* X = \frac{1}{N} T^{1/2} Z^* Z T^{1/2}.
+\eeq
+Now, $X$ has the form
+\beq
+X = \left( \begin{matrix} X_1 & X_2 \end{matrix} \right),
+\eeq
+where the columns of $X_1$ is $N \times d$ and $X_2$ is $N \times (M-d)$.   Each row of $X_1$ is found by multiplying the row vector formed by the first $d$ entries of a row of $Z$ on the right by $A^{1/2}$.  Each row of $X_2$ is found by multiplying the row vector formed by the last $M-d$ entries of a row of $Z$ on the right by $\Sigma^{1/2}$.  Note that $X_1$ and $X_2$ are independent due to our block matrix assumption for $T$.
+
+The sample covariance matrix $N^{-1} X^* X$ has the form,
+\beq
+\frac{1}{N} X^* X = \frac{1}{N} \left( \begin{matrix} X_1^* X_1 & X_1^* X_2 \\ X_2^* X_1 & X_2^* X_2 \end{matrix} \right).
+\eeq
+Due to the block matrix structure, the condition for $\mu$ to be an eigenvalue of $N^{-1} X^* X$ is,
+\begin{align}
+0=& \det ( N^{-1} X^* X - \mu ) \\
+=& \det ( N^{-1} X_2^* X_2 - \mu ) \det \left[ N^{-1} X_1^* X_1 - \mu - (N^{-1} X_1^* X_2 ) \frac{1}{ N^{-1} X_2^* X_2 - \mu } ( N^{-1} X_2^* X_1 ) \right]
+\end{align}
+as long as $\mu$ is not an eigenvalue of $N^{-1} X_2^* X_2$, but generically  $N^{-1} X_2^* X_2$ and $N^{-1} X^* X$ will never share eigenvalues.  The term on the RHS is the determinant of a $d \times d$ matrix.  Since $d$ is fixed, we can find the pointwise limit of this matrix which will give us the equation for $\mu$ to be an eigenvalue, as the determinant will be continuous in the matrix entries.
+
+ Now, since $d$ is finite, by the law of large numbers $N^{-1} X_1^* X_1$ converges to $A$ very quickly.   Conditioning on $X_2$, the second term should be thought of as the matrix 
+\beq
+N^{-1} X_1^* M  X_1.
+\eeq
+with $M$ defined appropriately.  This has expectation $A \times N^{-1} \tr M$ and variance bounded by $N^{-2} \tr M^2$ assuming $M$ symmetric.   The tracial quantities can all be bounded in terms just the resolvent $(N^{-1} X_2^* X_2 - \mu )^{-1}$ without having to worry about conjugation with $X_2$ etc.
+
+Now,
+\beq
+\frac{1}{N} \tr M = \frac{M-d}{N} + \mu \frac{1}{N} \tr \frac{1}{ X_2^* X_2 - \mu } \to \frac{M}{N}\left(1  + \mu m  (\mu) \right)
+\eeq
+where $m$ is the Stieltjes transform of the generalized MP law for a sample covariance matrix of $N$ samples with covariance $\Sigma$ (or a limit, or whatever). Defining $\gamma = M / N$, we get the equation,
+\beq
+\det \left[ A - \mu - A \gamma(1  + \mu m ( \mu )) \right] = 0.
+\eeq
+Diagonalizing $A$ gives us the relation,
+\beq
+p_k \approx \frac{ s_k}{ 1 - \gamma ( 1 + s_k m (s_k ) ) }
+\eeq
+where $p_k$ are population eigenvalues and $s_k$ are sample eigenvalues. The RHS seems to be the function $- 1 / \tilde{m} ( s_k)$ where $\tilde{m}$ is the limiting spectral distribution $N^{-1} \tr ( X_2 X_2^* -z )^{-1}$.
+
+Now, Bai-Yao works as follows.  Define,
+\beq \label{eqn:inv}
+\psi (-1 /\tilde{m}(z) ) = z.
+\eeq
+Then, if $\psi$ is of the form, 
+\beq
+\psi ( \alpha ) = \alpha + \gamma \alpha \int \frac{ \lambda \d H ( \lambda ) }{ \alpha - \lambda },
+\eeq
+then necessarily,
+\beq
+\tilde{m} = -  \left( z - \gamma \int \frac{ \lambda \d H ( \lambda ) }{ 1 + \lambda \tilde{m} (z) } \right)^{-1}.
+\eeq
+And we use this to find a best fit $\d H( \lambda)$.
+
+The cut-off for a ``distant spike'' is essentially tautological due to \eqref{eqn:inv}.  A point $p$ satifies $\psi' (p) >0$ iff
+\beq
+1 = \psi' (p  )\frac{ \tilde{m}' (s) }{ \tilde{m}^2 (s) }, \qquad s = \psi (p).
+\eeq
+which coincides with the right spectral edge of the limiting measure generating $\tilde{m}$ as this is the point where $\tilde{m}'$ becomes infinite.
+
+
+
+Let $e_k$ denote the sample eigenvector $E_k$ the population eigenvector.  Consider for vectors $u$, $v$ the quadratic form,
+\beq
+u^T e_k e_k^T v.
+\eeq
+Let us find a formula for this quantity.  As usual, we relate it to the resolvent via contour integration,
+\beq
+u^T e_k e_k^T v = - \frac{1}{ 2 \pi \i } \int_{\Gamma} u^T ( N^{-1} X^* X - z )^{-1} v \d z
+\eeq
+for a contour encircling only the sample eigenvalue $s_k$.  We write each vector $u = (u_1^T, u_2^T)^T$ for vectors $u_1$ and $u_2$ of dimensions $d$ and $M-d$ respectively, and the same for $v, v_1, v_2$.   Define the Schur complement of $X^* X-z$ with respect to $X_1^*X_1 - z$ by
+\beq
+S:= \frac{1}{N} X_1^*X_1 - z  -  N^{-1} X_1^* X_2 ( N^{-1} X_2^* X_2 - z )^{-1} N^{-1} X_2^* X_1 .
+\eeq
+This matrix $S$ is $d \times d$ and by the law of large numbers converges to,
+\beq
+ S \to A - z - A \gamma (1 + z m ( z) ),
+\eeq
+very quickly.  By the Schur complement formula, with $(N^{-1} X_2^* X_2 -z ) := R_2 (z)$ we have,
+\beq
+(N^{-1} X^* X - z )^{-1} = \left( \begin{matrix} S^{-1} & - S^{-1} N^{-1} X_1^* X_2 R_2 \\ - R_2  X_2^* X_1 S^{-1} & R_2+ R_2 N^{-1} X_2^* X_1 S^{-1} N^{-1} X_1^* X_2R_2 \end{matrix} \right)
+\eeq
+In order to analyze it, we need a {\bf key assumption} that within the contour integral, $N^{-1} X_2^* X_2$ has no eigenvalues.
+
+We now look at each component.  For the function $S(z)^{-1}$, it converges to the matrix,
+\beq
+\sum_{k=1}^d E_k \frac{1}{ p_k(1 - \gamma (1 +z m(z) ) ) - z } E_k^T.
+\eeq
+Under the assumption that the contour $\Gamma$ encircles only a single population eigenvalue under the map $z \to z / ( 1 - \gamma (1 + z m (z) ) ) = - 1 / \tilde{m} (z) $ the contour integral equals,
+\begin{align}
+\left( \frac{d}{dz} (z - p_k (1 - \gamma (1+ zm(z) ) )) \bigg\vert_{z = s_k } \right)^{-1} &=\left( 1 + \gamma p (m(s) + s m' (s) ) \right)^{-1} \\
+&= \left( 1 + p ( \tilde{m} + s \tilde{m}' ) \right)^{-1} \\
+& = - \frac{ \tilde{m} (s_k ) }{ s_k \tilde{m}' (s) } =  \frac{ p_k \psi' ( p_k ) }{ \psi ( p_k ) }
+\end{align}
+where we used $\tilde{m} (z) = (1-\gamma ) / (-z) + \gamma m (z)$.  Hence, the contribution from the top left block is,
+\beq
+u_1^T e_k e_k^T v_1 \approx \left( - \frac{ \tilde{m} (s_k ) }{ s_k \tilde{m}' ( s_k ) } \right) u_1^T E_k E_k^T v_k.
+\eeq
+The contributions from the other blocks are smaller.  First, top right block.  Here, the relevant vector to inspect is,
+\beq
+N^{-1} X_1^* ( X_2 R_2 v).
+\eeq
+Each coordinate of this $d$-dimensional vector is, conditionally on $X_2$, mean $0$ and asymptotically Gaussian distributioend with variance,
+\beq
+\frac{1}{N^2} v_2^T R^*_2 X_2^*X_2 R_2 v_2 = N v_2^T R_2^* v_2 + z N^{-2} v_2^T R_2^* R_2 v_2 = \O (N^{-1} ).
+\eeq
+So the top right block is $\O(N^{-1/2})$.  Same for contribution from bottom left block.  For the bottom right, since $R_2$ is analytic inside $\Gamma$, the term
+\beq
+v_2^T R_2 u_2
+\eeq
+vanishes when the contour integral is taken.  For the other term, the same argument as above means it is $\O (N^{-1})$.  
+
+
+
+\section{Model from Bloemendal-Knowles-Yau-Yin}
+
+
+
+
+
+We look at the matrix, 
+\beq
+Q = T X X^* T^*
+\eeq
+where $T$ is $M \times (M+1)$ and of the form $( \1, \lambda v)$ and $X$ is $(M+1) \times N$ and of the form $(Z^T, u^T)^T$ where $u$ is in $\rr^N$ and $Z$ is a usual noise matrix, of size $M \times N$.  
+
+So note that $TX = Z + \lambda v u^*$, and so $\ee_Z [ Q ] = \1 + \lambda^2 ||u||_2^2 v v^*$.    The normalization is then that $\ee[ (Z_{ij})^2] = N^{-1}$.  We also assume $||u||_2^2 = 1$.  We'll assume $||v||_2^2 = 1$.    
+
+Now we follow Section $8$ of [BKYY2].  We want to find the SVD of $T$.   Since $T T^* = \1 + \lambda^2 v v^T$ we see that if,
+\beq
+T = O' (\Lambda, 0) O''
+\eeq
+for $O'$ an orthogonal $M \times M$ and $O''$ an orthogonal $(M+1) \times (M+1)$ then $\Lambda$ is diagonal all ones except the first entry is $\sqrt{1+ \lambda^2}$ and $O'$ has first column $v$ then the rest are anything obtained from Gram-Schmidt to extend $v$ to an orthonormal basis of $\rr^M$.  Denote it $v_2, \dots v_M$.  
+
+To find $O''$ we use that $T* v_i$ gives eigenvectors of $T^* T$.   So the first row of $O''$ is $(v^*, \lambda ) / \sqrt{1+\lambda^2}$.  Then the rest of the rows are just $(v_i^*, 0)$.
+
+Section 8 introduces,
+\beq
+\Sigma^{1/2} = O' \Lambda (O')^*, \qquad O:= \left( \begin{matrix} O' & 0 \\ 0 & 1 \end{matrix} \right)O''.
+\eeq
+Its easy to see that $\Sigma = \1 + \lambda^2 v v^*$.  Following Section 8, we have $Q = \Sigma^{1/2} H \Sigma^{1/2}$ where $H = Y Y^*$ and $Y = (\1_M, 0) O X$.  
+From (3.34) of [BKYY2] the main quantity we need to control is then,
+\beq
+v^* \frac{1}{H-z} v.
+\eeq
+From Section 8, it looks like this quantity then goes to
+\beq
+(v^*, 0) \frac{1}{ O X X^* O^* - z } (v^*, 0)^* = [ O^* ( v^*, 0)^*]^* \frac{1}{ X X^* - z } O^* ( v^*, 0)^*
+\eeq
+The vector $O^* (v^*, 0)^*$ is $(v^*, \lambda)^* / \sqrt{1  + \lambda^2}$.  
+
+
+
+
+
+%%%%%%%%%%%
+
+
+\bibliography{mybib}{}
+\bibliographystyle{abbrv}
+
+\begin{comment}
+\begin{thebibliography}{9999}
+\bibitem[EKYY]{EKYY} Erdos-Knowles-Yau-Yin.  Semicircle for general class
+
+
+
+
+\end{thebibliography}
+\end{comment}
+\end{document}
