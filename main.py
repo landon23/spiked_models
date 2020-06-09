@@ -228,3 +228,70 @@ def generalWishart(N, M, variance):
     X = X / np.sqrt(N)
     S = np.linalg.svd(X, compute_uv=False)
     return S*S
+
+def powerTailWishart(N, M):
+    X = np.random.normal(size=(N, M))
+    gam = np.arange(M)/M
+    gam = np.power(gam, 0.25)
+    gam = gam /2
+    gam = 1 - gam
+    X = X*np.sqrt(gam)
+    X = X / np.sqrt(N)
+    U, S, V = np.linalg.svd(X)
+    S2 = np.linalg.svd(X[:, 1:M], compute_uv=False)
+    #columns of U are eigenvectors of XX^T and rows of V are eigenvectors of X^T X.
+    return U, S*S, V,S2*S2
+
+def powerLawSpiked(N, M, lamb):
+    X = np.random.normal(size=(N, M))
+    gam = np.arange(M) / M
+    gam = np.power(gam, 0.25)
+    gam = gam / 2
+    gam = 1 - gam
+    gam[0] = lamb + gam[0]
+    X = X * np.sqrt(gam)
+    X = X / np.sqrt(N)
+    U, S, V = np.linalg.svd(X)
+    S2 = np.linalg.svd(X[:, 1:M], compute_uv=False)
+    # columns of U are eigenvectors of XX^T and rows of V are eigenvectors of X^T X.
+    return U, S * S, V
+
+def Hemp(x):
+    M=500
+    N = 2500
+    gamma = (M-1)/N
+    gam = np.arange(M) / M
+    gam = gam[1:500]
+    gam = np.power(gam, 0.25)
+    gam = gam / 2
+    gam = 1 - gam
+    integ = np.mean(gam / (x-gam))
+    psi = x + gamma*x*integ
+    return psi
+
+def psider(x):
+    M = 500
+    N = 2500
+    gamma = (M-1)/N
+    gam = np.arange(M) / M
+    gam = gam[1:500]
+    gam = np.power(gam, 0.25)
+    gam = gam / 2
+    gam = 1 - gam
+    integ = np.mean(gam*gam / ((x-gam)*(x-gam)))
+    return 1 - gamma*integ
+
+def eta(x):
+    M = 500
+    N =2500
+    gamma = (M-1)/N
+    gam = np.arange(M) / M
+    gam = gam[1:M]
+    gam = np.power(gam, 0.25)
+    gam = gam/2
+    gam = 1 - gam
+
+    psip = 1 - gamma*np.mean(gam*gam/ ((x-gam)*(x-gam)))
+    psi = x+gamma*x*np.mean(gam / (x-gam))
+    return x*psip / psi
+
