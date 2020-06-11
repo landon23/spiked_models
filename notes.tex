@@ -411,6 +411,50 @@ v_2^T R_2 u_2
 vanishes when the contour integral is taken.  For the other term, the same argument as above means it is $\O (N^{-1})$.  
 
 
+\subsection{Variance of spiked eigenvalue}
+
+We are going to try to calculate the variance of a spiked eigenvalue in the case of a $1$-dimensional spike.  We will do it in a Gaussian case, with the belief that the variance expression is universal as long as the population eigenvectors are \emph{delocalized}.  
+
+The equation we get from the previous section is, with $X_1 = \sqrt{d} v$ for a column vector $v$ of standard normals,
+\beq
+\frac{\mu}{d} = \frac{1}{N} v^* \left( 1 - \frac{1}{N} X_2 \frac{1}{ N^{-1} X_2^* X_2 - \mu } X_2^* \right) v.
+\eeq
+We calculated the limiting equation,
+\beq
+\frac{s}{d}  = 1 - \gamma(1 + s m (s) ).
+\eeq
+Subtracting, we arrange things so that
+\begin{align}
+& d^{-1} ( \mu - s ) + \frac{1}{N^2} v^* X_2 \left[ \frac{1}{ N^{-1} X_2^* X_2 - \mu } - \frac{1}{ N^{-1} X_2^* X_2 - s } \right] X_2^* v \\
+=& \frac{1}{N} v^* \left( 1 - \frac{1}{N} X_2 \frac{1}{ N^{-1} X_2^* X_2 - s } X_2^* \right) v - 1 - \gamma ( 1 + s m (s) ).
+\end{align}
+For the LHS,
+\begin{align}
+&d^{-1} ( \mu - s ) + \frac{1}{N^2} v^* X_2 \left[ \frac{1}{ N^{-1} X_2^* X_2 - \mu } - \frac{1}{ N^{-1} X_2^* X_2 - s } \right] X_2^* v \\
+\approx & ( \mu - s) \left( \frac{1}{d} + \frac{1}{N^2} v^* X_2 \frac{1}{ ( N^{-1} X_2^* X_2 - s )^2 } X_2^* v \right) \\
+\approx & ( \mu - s ) \left( \frac{1}{d} + \gamma ( m ( s ) + s m' (s) ) \right)
+\end{align}
+In the Gaussian case, the variance of the RHS is
+\begin{align}
+& \frac{1}{N^2} \tr  \left( 1 - \frac{1}{N} X_2 \frac{1}{ N^{-1} X_2^* X_2 - s } X_2^* \right)^2 \\
+\approx & \frac{1}{N} \left( 1 - 2\gamma(1 + s m (s) ) + \gamma ( s^2 m' (s) + 2 s m (s) + 1 ) \right) \\
+= & \frac{1}{N} \left( 1+ \gamma(s^2 m' (s) -1) \right)
+\end{align}
+So for variance it seems we want to look at,
+\beq
+\mathrm{Var} (\mu - s) \approx \frac{1}{N} \frac{ 1 + \gamma (s^2 m' (s) - 1) }{ ( d^{-1} + \gamma (m(s) + s m' (s) ) )^2 }
+\eeq
+and we probably want to sub out,
+\beq
+d^{-1}  =\frac{1}{s} \left( 1 - \gamma (1 + s m (s) \right)
+\eeq
+to get
+\beq
+\mathrm{Var} ( \mu - s) \approx s^2 \frac{1}{N} \frac{1}{ 1 + \gamma (s^2 m'(s) -1 )} = \frac{1}{N \tilde{m}' (s) }
+\eeq
+
+
+
 
 \section{Model from Bloemendal-Knowles-Yau-Yin}
 

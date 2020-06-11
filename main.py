@@ -1,6 +1,8 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.stats import linregress
+import scipy.integrate as integrate
 
 def marcenko_pastur(N, M, d=400):
     phi = N / M
@@ -231,7 +233,7 @@ def generalWishart(N, M, variance):
 
 def powerTailWishart(N, M):
     X = np.random.normal(size=(N, M))
-    gam = np.arange(M)/M
+    gam = (1+np.arange(M))/M
     gam = np.power(gam, 0.25)
     gam = gam /2
     gam = 1 - gam
@@ -245,7 +247,7 @@ def powerTailWishart(N, M):
 def powerLawSpiked(N, M, lamb):
     X = np.random.normal(size=(N, M))
     gam = np.arange(M) / M
-    gam = np.power(gam, 0.25)
+    gam = np.power(gam, 0.4)
     gam = gam / 2
     gam = 1 - gam
     gam[0] = lamb + gam[0]
@@ -295,3 +297,108 @@ def eta(x):
     psi = x+gamma*x*np.mean(gam / (x-gam))
     return x*psip / psi
 
+def makeGamma(M):
+    gam = (1+np.arange(M) )/ M
+    gam = np.power(gam, 0.25)
+    gam = gam / 2
+    gam = 1 - gam
+    return gam
+
+def eta_dropout(i, M, N):
+    gamma = (M-1)/N
+    gam = (1+np.arange(M) )/ M
+    gam = np.power(gam, 0.25)
+    gam = gam / 2
+    gam = 1 - gam
+    if i == 0:
+        quant = gam[1:M]
+    else:
+        #quant = np.concatenate((gam[0:i], gam[i+1:M]))
+        quant = gam[i+1:M]
+    psip = 1 - gamma*np.mean(quant*quant / ((gam[i]-quant)*(gam[i]-quant)))
+    psi = gam[i]+gamma*gam[i]*np.mean(quant / (gam[i]-quant))
+    return gam[i]*psip/psi
+
+def make_random_gammas(M):
+    ra = np.random.uniform(size=(M))
+    uni = np.sort(ra)
+    gam = np.power(uni, 0.25)
+    gam = gam /2
+    gam = 1 - gam
+    return gam
+
+def randWish(N, M, gam):
+    X = np.random.normal(size=(N, M))
+    X = X * np.sqrt(gam)
+    X = X / np.sqrt(N)
+    U, S, V = np.linalg.svd(X)
+    return U, S*S, V
+
+def makevar():
+    N = 1250
+    M = 500
+    m = 400
+    n = 10.0
+    var = np.random.uniform(size=m)
+
+
+    var = np.abs(var)
+    var = np.sort(var)
+    var = np.power(var, 1.0 / n)
+    var = 1 - var
+    var = var * 8.0
+    var = np.append(var + 1.0, np.ones(M - m))
+    # var = np.abs(var)
+    #var = var + 1.0
+    return var
+
+
+def fitter(lambs):
+    top = lambs[0]
+    rest = lambs[0]-lambs[1:31]
+
+    h, b = np.histogram(rest,15)
+    c = b[0:len(b)-1]+b[1:len(b)]
+    c = c/2
+    reg = linregress(np.log(c), np.log(np.maximum(h, 1)))
+    return reg[0], reg[1], h, c, b
+
+def m_est(lambs, i):
+    dif = lambs[i] - lambs[i+1:]
+    m = np.mean(1/dif)
+    mp = np.mean(1/ (dif*dif))
+    return m / (mp*lambs[i])
+
+def var_est(lambs, N, M, n=50, nbins=10):
+    #lambs should be the non-zero eigenvalues of X^*X, where X is N x M.  if N < M, then we will probably be given a vector of length N
+    #this estimator will drop lambs[0] and use the remainder to try to find an estimate of the variance (N \tilde{m} ( \lambda[0] ) )^{-1}.
+    #Here, \tilde{m} is the limit of stieltjes transform of X X^*.
+    #We will estimate it using lambs[1:].
+    l1 = lambs[1:1+n]
+    l1s = l1[0]-l1
+    l2 = lambs[1+n:]
+    h, b = np.histogram(l1s, bins=nbins)
+    c = (b[0:nbins]+b[1:nbins+1])/2
+    linr = linregress(np.log(c), np.log(np.maximum(h, 0.1)))
+    beta, logc = linr[0], linr[1]
+    #print('beta:', beta)
+
+    #fit p(x) = Z^{-1} (lamb[1]-x)^beta 1_{0 < lamb[1] - x < b[nbins]}
+    Z = np.power(b[nbins], beta+1) / (beta+1)   #this choice of Z makes p integrate to 1
+    cont1 = integrate.quad(lambda x: calcmder(x, lambs[1], lambs[0], beta), 0, b[nbins])[0] / Z
+    cont2 = np.mean(1 / np.power(l2-lambs[0], 2.0))
+
+    mp = cont1*n/(M-1) + (M-1-n)/(M+1)*cont2
+    gam = (M-1)/N
+
+    tilmp =gam*mp +(1-gam) / np.power(lambs[0], 2.0)
+
+    return 2 / (N*tilmp)
+
+
+
+
+def calcmder(x, b, c, beta):
+    # calculate the function, for a < x < b<c, (b-x)^beta / (x-c)^2
+    # calculate the function, for  x > 0, x^\beta / (x + c - b)^2.  Here c= lambs[0], b = lambs[1], so c-b > 0.
+    return np.power(x, beta) / np.power(x+c-b, 2.0)
