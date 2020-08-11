@@ -14,6 +14,10 @@ def marcenko_pastur(N, M, d=400):
     print('check')
     return x, mp
 
+
+
+
+
 def wishart(N, M, norm = False):
     X = np.random.normal(size=(N, M))
     if norm:

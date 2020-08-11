@@ -411,6 +411,46 @@ v_2^T R_2 u_2
 vanishes when the contour integral is taken.  For the other term, the same argument as above means it is $\O (N^{-1})$.  
 
 
+
+\subsection{Variance of overlap}
+
+First we have the general formula for analytic $f$, $g$ where,
+\beq
+\frac{1}{ 2 \pi \i } \int \frac{ g(z) }{  z+ f(z) } \d z = \frac{ g (c)}{ 1 + f' (c) }
+\eeq
+Hence, with $X_1 = \sqrt{d} v$ a column vector,
+\begin{align}
+x^T e_1 e_1^T y &=  \frac{1}{ 1+ d N^{-2} v^T X_2 R_2(\lambda_1)^2 X_2^* v} \left( x_1 -  N^{-1} \sqrt{d} v^* X_2 R_2 \tilde{x} \right)\left(y_1 - N^{-1} \sqrt{d} v^* X_2 R_2 \tilde{y} \right) 
+\end{align}
+To attack this need to first examine the denominator.  First,
+\beq
+\lambda_1 - s \approx \frac{1}{ s \tilde{m}' (s) } \left( \frac{1}{N} v^* (1 - N^{-1} X_2 R_2 (s) X_2^* )v + \tilde{m} (s) s \right) =: \frac{X}{ s \tilde{m}' (s) }.
+\eeq
+So,
+\begin{align}
+1 + d\frac{1}{N^2} v^T X_2 R_2^2 ( \lambda_1 ) X_2^* v &\approx d s \tilde{m}' (s) + \left( 1 + d\frac{1}{N^2} v^T X_2 R_2^2 ( s ) X_2^* v - d s \tilde{m}'(s) \right) \\
+&+\frac{X}{ s \tilde{m}' (s) } d ( \tilde{m}'(s) + s \tilde{m}'' (s) ).
+\end{align}
+In the case when $x = y = \delta_1$ we can just drop a bunch of stuff to find,
+\begin{align}
+&( \delta_1^T e_1 )^2 - \frac{1}{ s d \tilde{m}' (s) } \\
+\approx -& \frac{1}{ (d s \tilde{m}' (s) )^2} \left( 1 + d \frac{1}{N^2} v^T X_2 R_2^2(s) X_2^* v - d s \tilde{m}' (s) + \frac{ d ( \tilde{m}' (s) + s \tilde{m}'' (s) )}{ s \tilde{m}' (s) } \left( \frac{1}{N} v^* (1 - N^{-1} X_2 R_2 (s) X_2^* )v + \tilde{m} (s) s \right) \right) 
+\end{align}
+The contribution
+\begin{align}
+\frac{1}{N^2} v^* \left( X_2 R_2^2 X_2^* + \frac{ \tilde{m}' (s) + s \tilde{m}''(s)}{ s \tilde{m}' (s) } (1-N^{-1} X_2 R_2 X_2^* ) \right)v
+\end{align}
+is a Gaussian with variance,
+\beq
+\frac{s^2 \tilde{m}''' (s) }{3}
+\eeq
+so it turns out that 
+\beq
+\mathrm{Var} ( e_1^T \delta_1 ) =\frac{1}{N}  \frac{1}{3} \frac{ s^2 \tilde{m}''' (s) }{ ( d s \tilde{m}' (s) )^4 } = \frac{1}{ 3 N } \frac{ \tilde{m}'''(s) ( \tilde{m} (s) )^4 }{ s^2 ( \tilde{m}' (s) )^4 }
+\eeq
+
+
+
 \subsection{Variance of spiked eigenvalue}
 
 We are going to try to calculate the variance of a spiked eigenvalue in the case of a $1$-dimensional spike.  We will do it in a Gaussian case, with the belief that the variance expression is universal as long as the population eigenvectors are \emph{delocalized}.  
@@ -426,7 +466,7 @@ We calculated the limiting equation,
 Subtracting, we arrange things so that
 \begin{align}
 & d^{-1} ( \mu - s ) + \frac{1}{N^2} v^* X_2 \left[ \frac{1}{ N^{-1} X_2^* X_2 - \mu } - \frac{1}{ N^{-1} X_2^* X_2 - s } \right] X_2^* v \\
-=& \frac{1}{N} v^* \left( 1 - \frac{1}{N} X_2 \frac{1}{ N^{-1} X_2^* X_2 - s } X_2^* \right) v - 1 - \gamma ( 1 + s m (s) ).
+=& \frac{1}{N} v^* \left( 1 - \frac{1}{N} X_2 \frac{1}{ N^{-1} X_2^* X_2 - s } X_2^* \right) v - 1 +\gamma ( 1 + s m (s) ).
 \end{align}
 For the LHS,
 \begin{align}
